@@ -395,7 +395,7 @@ int runObjectStoreControllerTests()
             CState child(nullptr,false,&state);
             require(child.objectStoreSession()==state.objectStoreSession(),"secondary workspaces share session");
         }
-        require(state.objectStoreSession()->attachment().has_value(),"secondary destruction keeps main attachment");
+        require(state.objectStoreAttachment().has_value(),"secondary destruction keeps main attachment");
         state.detachObjectStore();
         require(controller.readStoredFibers(std::nullopt).empty() && controller.fiberUuidForId(merged.id).empty(),
                 "detach leaves nothing to read and no identities");
