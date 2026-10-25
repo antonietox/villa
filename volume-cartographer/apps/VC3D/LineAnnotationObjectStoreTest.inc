@@ -69,8 +69,9 @@ int runObjectStoreControllerTests()
             Controller controller(&state,nullptr,nullptr,nullptr);
             state.attachObjectStore(QString::fromStdString(storePath.string()), "vc3d-umbilicus-test");
             state.setCurrentVolume(volume);
-            int changed = 0;
+            int changed = 0, fibersChanged = 0;
             QObject::connect(&state, &CState::umbilicusChanged, [&] { ++changed; });
+            QObject::connect(&controller, &Controller::fibersChanged, [&] { ++fibersChanged; });
             require(!state.storedUmbilicus().error.empty() && !controller.umbilicusStatus().available,
                     "a volume without a stored umbilicus has none");
             const auto attachment = *state.objectStoreAttachment();
@@ -88,6 +89,7 @@ int runObjectStoreControllerTests()
             const auto first = add("scroll");
             const auto stored = state.storedUmbilicus();
             require(changed > 0, "committing an umbilicus announces it");
+            require(fibersChanged == 0, "a commit touching no fiber leaves the fiber caches alone");
             require(stored.error.empty() && stored.uuid == first &&
                     stored.points == std::vector<cv::Vec3f>{{4, 3, 0}, {4, 3, 15}},
                     "the stored umbilicus is read in the volume's voxels");

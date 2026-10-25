@@ -2010,7 +2010,10 @@ LineAnnotationController::LineAnnotationController(CState* state,
                 onVolumePackageChanged({});
                 return;
             }
-            if (!_state->objectStoreSession()->current(event.attachment)) return;
+            // Fibers live in the user's store: its fiber records and their
+            // branch and attachment relationships.
+            if (event.attachment != _state->objectStoreAttachment() ||
+                !vc3d::store::touches(event, {"fiber", "fiber_branch", vc::objects::kAttachmentEdgeKind})) return;
             ++_fiberDataGeneration;
             _sideStripStoredSnapshotCache.clear();
             refreshChangedStoreFibers();
