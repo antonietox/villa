@@ -1216,30 +1216,6 @@ fs::path VolumePkg::selectedFiberInferenceDatasetPath() const
     return vc::project::resolveLocalPath(*selectedFiberInferenceDataset_, path_.parent_path());
 }
 
-std::string VolumePkg::umbilicus() const
-{
-    return umbilicus_.value_or(std::string{});
-}
-
-void VolumePkg::setUmbilicus(std::string location)
-{
-    if (location.empty()) {
-        if (!umbilicus_) return;
-        umbilicus_.reset();
-        persistProjectState();
-        return;
-    }
-    umbilicus_ = std::move(location);
-    persistProjectState();
-}
-
-fs::path VolumePkg::umbilicusPath() const
-{
-    if (!umbilicus_) return {};
-    if (vc::project::isLocationRemote(*umbilicus_)) return {};
-    return vc::project::resolveLocalPath(*umbilicus_, path_.parent_path());
-}
-
 bool VolumePkg::hasVolumes() const { return !loadedVolumes_.empty(); }
 bool VolumePkg::hasVolume(const std::string& id) const { return loadedVolumes_.count(id) > 0; }
 std::size_t VolumePkg::numberOfVolumes() const { return loadedVolumes_.size(); }
@@ -1613,7 +1589,6 @@ utils::Json VolumePkg::toJson() const
     j["lasagna_datasets"] = entriesToJson(lasagnaDatasets_);
     if (selectedLasagnaDataset_) j["selected_lasagna_dataset"] = *selectedLasagnaDataset_;
     if (selectedFiberInferenceDataset_) j["selected_fiber_inference_dataset"] = *selectedFiberInferenceDataset_;
-    if (umbilicus_) j["umbilicus"] = *umbilicus_;
     if (focusBounds_) {
         auto low = utils::Json::array();
         auto high = utils::Json::array();
@@ -1682,10 +1657,6 @@ void VolumePkg::fromJson(const utils::Json& j)
     if (j.contains("selected_fiber_inference_dataset")) {
         selectedFiberInferenceDataset_ = j.at("selected_fiber_inference_dataset").get_string();
         if (selectedFiberInferenceDataset_->empty()) selectedFiberInferenceDataset_.reset();
-    }
-    if (j.contains("umbilicus")) {
-        umbilicus_ = j.at("umbilicus").get_string();
-        if (umbilicus_->empty()) umbilicus_.reset();
     }
 }
 
