@@ -699,7 +699,8 @@ if(NOT TARGET vc_delta3d::vc_delta3d)
     FetchContent_MakeAvailable(vc_delta3d)
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR MSVC)
+option(VC_CLANG_OPENMP "Use real OpenMP (libomp) with Clang instead of the no-op shim" OFF)
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT VC_CLANG_OPENMP) OR MSVC)
     # Clang and MSVC both use the no-op OpenMP shim: -fopenmp / -openmp is never
     # enabled, so every `#pragma omp` is ignored and the omp_*() runtime calls
     # resolve to the inline stubs in core/openmp_stub/omp.h. These builds run the

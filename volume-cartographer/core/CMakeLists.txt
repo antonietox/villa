@@ -27,6 +27,7 @@ add_library(vc_core
         src/VoxelSizeMetadata.cpp
         src/SparseChunkSpool.cpp
         src/Slicing.cpp
+        src/OpenMPDefaults.cpp
         src/Compositing.cpp
         src/AffineTransform.cpp
         src/ScaleTifxyz.cpp
