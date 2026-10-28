@@ -65,6 +65,14 @@ Downloads for all operating systems are available on the [releases page](https:/
   </div>
 
 </TabItem>
+  <TabItem value="mac-intel" label="Mac (Intel)">
+
+  The official macOS releases are Apple Silicon only. A native Intel (x86_64) build, packaged with villa's own `MacPackaging.cmake`, is available from [vc3d-intel-mac](https://github.com/antonietox/vc3d-intel-mac). Requires macOS 13.3 or newer and an AVX2 CPU (2013 or newer).
+
+  - Download `VC3D-…-macos-x86_64.dmg` from that repo's [releases page](https://github.com/antonietox/vc3d-intel-mac/releases), open it and drag VC3D into Applications.
+  - The app is ad-hoc signed, not notarized. On first launch, open it once, then click **Open Anyway** in System Settings → Privacy & Security (or run `xattr -dr com.apple.quarantine /Applications/VC3D.app`).
+
+  </TabItem>
   <TabItem value="windows" label="Windows">
 
   - Download the windows installer .zip file from the [releases page](https://github.com/ScrollPrize/villa/releases) of the villa repository.
@@ -109,6 +117,7 @@ Downloads for all operating systems are available on the [releases page](https:/
 
 Depending on your install method or operating system, the application may be launched in different ways.
 - **Mac:** Open the application from the Applications folder
+- **Mac (Intel):** Open VC3D from the Applications folder
 - **Windows:** Open the application from the Start menu
 - **Linux:** With the AppImage, run `./VC3D-*-linux-x86_64.AppImage VC3D`. With a source build, navigate to the build folder and run the VC3D app. example: `cd build/bin && ./VC3D`
 
